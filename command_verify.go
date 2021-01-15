@@ -68,7 +68,15 @@ func verifyAttached() error {
 			sErrSig.emit()
 		}
 
-		return errors.Wrap(err, "failed to verify signature")
+		unverifiedCerts,_ := sd.GetCertificates();
+		for i, a := range unverifiedCerts {
+						certName := fmt.Sprintf("failed-attached-certchain-%d.der",i)
+						certCerFile, _ := os.Create(certName)
+						certCerFile.Write(a.Raw)
+						certCerFile.Close()
+		}
+
+		return errors.Wrap(err, "failed to verify attached signature")
 	}
 
 	var (
@@ -144,7 +152,15 @@ func verifyDetached() error {
 			sErrSig.emit()
 		}
 
-		return errors.Wrap(err, "failed to verify signature")
+		unverifiedCerts,_ := sd.GetCertificates();
+		for i, a := range unverifiedCerts {
+						certName := fmt.Sprintf("failed-detached-certchain-%d.der",i)
+						certCerFile, _ := os.Create(certName)
+						certCerFile.Write(a.Raw)
+						certCerFile.Close()
+		}
+
+		return errors.Wrap(err, "failed to verify detached signature")
 	}
 
 	var (
