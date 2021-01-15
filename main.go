@@ -7,7 +7,6 @@ import (
 	"io"
 	"os"
 
-	"github.com/github/certstore"
 	"github.com/pborman/getopt/v2"
 	"github.com/pkg/errors"
 )
@@ -40,7 +39,6 @@ var (
 	// Remaining arguments
 	fileArgs []string
 
-	idents []certstore.Identity
 
 	// these are changed in tests
 	stdin  io.ReadCloser  = os.Stdin
@@ -73,20 +71,20 @@ func runCommand() error {
 	}
 
 	// Open certificate store
-	store, err := certstore.Open()
-	if err != nil {
-		return errors.Wrap(err, "failed to open certificate store")
-	}
-	defer store.Close()
+	// store, err := certstore.Open()
+	// if err != nil {
+	// 	return errors.Wrap(err, "failed to open certificate store")
+	// }
+	// defer store.Close()
 
-	// Get list of identities
-	idents, err = store.Identities()
-	if err != nil {
-		return errors.Wrap(err, "failed to get identities from certificate store")
-	}
-	for _, ident := range idents {
-		defer ident.Close()
-	}
+	// // Get list of identities
+	// idents, err = store.Identities()
+	// if err != nil {
+	// 	return errors.Wrap(err, "failed to get identities from certificate store")
+	// }
+	// for _, ident := range idents {
+	// 	defer ident.Close()
+	// }
 
 	if *signFlag {
 		if *verifyFlag || *listKeysFlag {
@@ -94,7 +92,7 @@ func runCommand() error {
 		} else if len(*localUserOpt) == 0 {
 			return errors.New("specify a USER-ID to sign with")
 		} else {
-			return commandSign()
+		//	return commandSign()
 		}
 	}
 
@@ -122,7 +120,7 @@ func runCommand() error {
 		} else if *armorFlag {
 			return errors.New("armor cannot be specified for list-keys")
 		} else {
-			return commandListKeys()
+			// return commandListKeys()
 		}
 	}
 

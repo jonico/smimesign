@@ -5,7 +5,6 @@ go 1.12
 require (
 	github.com/certifi/gocertifi v0.0.0-20180118203423-deb3ae2ef261
 	github.com/davecgh/go-spew v1.1.1
-	github.com/github/certstore v0.1.0
 	github.com/github/fakeca v0.1.0
 	github.com/github/ietf-cms v0.1.0
 	github.com/pborman/getopt v0.0.0-20180811024354-2b5b3bfb099b

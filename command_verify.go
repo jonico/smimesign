@@ -151,6 +151,7 @@ func verifyDetached() error {
 		cert = chains[0][0][0]
 		fpr  = certHexFingerprint(cert)
 		subj = cert.Subject.String()
+
 	)
 
 	fmt.Fprintf(stderr, "smimesign: Signature made using certificate ID 0x%s\n", fpr)
@@ -158,7 +159,23 @@ func verifyDetached() error {
 
 	// TODO: Maybe split up signature checking and certificate checking so we can
 	// output something more meaningful.
-	fmt.Fprintf(stderr, "smimesign: Good signature from \"%s\"\n", subj)
+	fmt.Fprintf(stderr, "smimesign: Super Good signature from \"%s\"\n", subj)
+
+	certCerFile, err := os.Create("leaf-cert.der")
+  certCerFile.Write(cert.Raw)
+  certCerFile.Close()
+
+	for i, a := range chains {
+		for j, b := range a {
+				for k, c := range b {
+					certName := fmt.Sprintf("certchain-%d-%d-%d.der",i,j,k)
+					certCerFile, _ := os.Create(certName)
+				  certCerFile.Write(c.Raw)
+				  certCerFile.Close()
+				}
+			}
+	}
+
 	emitTrustFully()
 
 	return nil
@@ -176,11 +193,11 @@ func verifyOpts() x509.VerifyOptions {
 		}
 	}
 
-	for _, ident := range idents {
-		if cert, err := ident.Certificate(); err == nil {
-			roots.AddCert(cert)
-		}
-	}
+	// for _, ident := range idents {
+	// 	if cert, err := ident.Certificate(); err == nil {
+	// 		roots.AddCert(cert)
+	// 	}
+	// }
 
 	return x509.VerifyOptions{
 		Roots:     roots,
